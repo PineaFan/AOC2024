@@ -2,21 +2,16 @@
 
 import fs from "fs";
 
-const data = (day: number, test?: boolean, customName?: string) => {
-    const slug = customName ?? test ? 'test' : 'data';
-    // Day is float (day.part)
-    const dayNumber = Math.floor(day);
-    const partNumber = Math.round((day - dayNumber) * 10);  // Float to int
+const readRawData = (day: number, test?: boolean, customName?: string) => {
+    const slug = customName ?? (test ? 'test' : 'data');
 
-    let data;
-    if (partNumber) {
-        const fileName = `./src/data/${dayNumber}/${slug}-${partNumber}.txt`;
-        data = fs.readFileSync(fileName, 'utf8');
-    } else {
-        const fileName = `./src/data/${dayNumber}/${slug}.txt`;
-        data = fs.readFileSync(fileName, 'utf8');
-    }
-    return data!.split("\n").filter((line) => line !== "");
+    const fileName = `./src/data/${day}/${slug}.txt`;
+    return fs.readFileSync(fileName, 'utf8');
+}
+
+const data = (day: number, test?: boolean, customName?: string) => {
+    return readRawData(day, test, customName).split("\n").filter((line) => line !== "");
 }
 
 export default data;
+export { readRawData };
