@@ -45,4 +45,6 @@ const solve = (test?: boolean, customName?: string) => {
     return { part1: part1total, part2: part2total };
 };
 
+if (require.main === module) { console.log(solve()); }
+
 export default solve;

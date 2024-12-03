@@ -58,15 +58,37 @@ const dayNumber = Math.floor(dayPart);
 const partNumber = Math.round((dayPart - dayNumber) * 10);
 const dataset = args.length > 1 ? args[1] : null;
 
-const solve = (() => {
-    const result = days[dayNumber](dataset);
+const solve = ((day: number) => {
+    const result = days[day](dataset);
     if (partNumber === 1) return result.part1;
     if (partNumber === 2) return result.part2;
     return {
         "Part 1": result.part1,
         "Part 2": result.part2
     }
-})();
+});
 
-console.table(solve);
-console.log("Done!");
+if (!args.length || args[0] === "all") {
+    const dayFunctions = Object.keys(days);
+    function timeFunctionExecution<T>(fn: (...args: any[]) => T, ...args: any[]): { result: T; duration: number } {
+        const start = performance.now();
+        const result = fn(...args);
+        const end = performance.now();
+        return {
+            result,
+            duration: end - start, // Time in milliseconds
+        };
+    };
+    const runAll = () => {
+        // Just run all days as fast as possible without timing
+        for (const day of dayFunctions) {
+            solve(parseInt(day));
+        }
+    }
+    const timeToRun = timeFunctionExecution(runAll).duration;
+    // Round to 6dp (Won't be any more accurate than that, and you get small floating point errors)
+    const rounded = Math.round(timeToRun * 1e6) / 1e6;
+    console.log(`Time to run days 1 to ${dayFunctions.length}: ${rounded}ms`);
+} else {
+    console.table(solve(dayNumber));
+}
