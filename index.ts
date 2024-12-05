@@ -2,7 +2,7 @@ import day1 from "./src/1/index.ts";
 import day2 from "./src/2/index.ts";
 import day3 from "./src/3/index.ts";
 import day4 from "./src/4/index.ts";
-// import day5 from "./src/5/index.ts";
+import day5 from "./src/5/index.ts";
 // import day6 from "./src/6/index.ts";
 // import day7 from "./src/7/index.ts";
 // import day8 from "./src/8/index.ts";
@@ -29,7 +29,7 @@ const days = {
     2: day2,
     3: day3,
     4: day4,
-    // 5: day5,
+    5: day5,
     // 6: day6,
     // 7: day7,
     // 8: day8,
@@ -58,8 +58,19 @@ const dayNumber = Math.floor(dayPart);
 const partNumber = Math.round((dayPart - dayNumber) * 10);
 const dataset = args.length > 1 ? args[1] : null;
 
+function timeFunctionExecution<T>(fn: (...args: any[]) => T, ...args: any[]): { result: T; duration: number } {
+    const start = performance.now();
+    const result = fn(...args);
+    const end = performance.now();
+    return {
+        result,
+        duration: end - start, // Time in milliseconds
+    };
+};
+
 const solve = ((day: number) => {
-    const result = days[day](dataset);
+    const { result, duration } = timeFunctionExecution(() => days[day](dataset)) as { result: { part1: any, part2: any }, duration: number };
+    console.log(`Day ${day} took ${duration}ms`);
     if (partNumber === 1) return result.part1;
     if (partNumber === 2) return result.part2;
     return {
@@ -68,17 +79,22 @@ const solve = ((day: number) => {
     }
 });
 
-if (!args.length || args[0] === "all") {
+if ( args[0] === "stats") {
+    // Run each day, in order, and store the time taken for each. This can then be used to compare the speed of each day
+    const stats: Record<string, { DurationMs: number, Proportion: string }> = {};
+    for (const day of Object.keys(days)) {
+        const { duration } = timeFunctionExecution(() => days[parseInt(day)](dataset)) as { duration: number };
+        // Only store 6dp
+        const rounded = Math.round(duration * 1e6) / 1e6;
+        stats[`Day ${day}`] = { DurationMs: rounded, Proportion: "" };
+    }
+    const total = Object.values(stats).reduce((acc, curr) => acc + curr.DurationMs, 0);
+    for (const day of Object.keys(stats)) {
+        stats[day].Proportion = `${(stats[day].DurationMs / total * 100).toFixed(2)}%`;
+    }
+    console.table(stats);
+} else if (!args.length || args[0] === "all") {
     const dayFunctions = Object.keys(days);
-    function timeFunctionExecution<T>(fn: (...args: any[]) => T, ...args: any[]): { result: T; duration: number } {
-        const start = performance.now();
-        const result = fn(...args);
-        const end = performance.now();
-        return {
-            result,
-            duration: end - start, // Time in milliseconds
-        };
-    };
     const runAll = () => {
         // Just run all days as fast as possible without timing
         for (const day of dayFunctions) {
