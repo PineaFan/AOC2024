@@ -3,7 +3,7 @@ import day2 from "./src/2/index.ts";
 import day3 from "./src/3/index.ts";
 import day4 from "./src/4/index.ts";
 import day5 from "./src/5/index.ts";
-// import day6 from "./src/6/index.ts";
+import day6 from "./src/6/index.ts";
 // import day7 from "./src/7/index.ts";
 // import day8 from "./src/8/index.ts";
 // import day9 from "./src/9/index.ts";
@@ -30,7 +30,7 @@ const days = {
     3: day3,
     4: day4,
     5: day5,
-    // 6: day6,
+    6: day6,
     // 7: day7,
     // 8: day8,
     // 9: day9,
