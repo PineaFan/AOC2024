@@ -4,8 +4,8 @@ import day3 from "./src/3/index.ts";
 import day4 from "./src/4/index.ts";
 import day5 from "./src/5/index.ts";
 import day6 from "./src/6/index.ts";
-// import day7 from "./src/7/index.ts";
-// import day8 from "./src/8/index.ts";
+import day7 from "./src/7/index.ts";
+import day8 from "./src/8/index.ts";
 // import day9 from "./src/9/index.ts";
 // import day10 from "./src/10/index.ts";
 // import day11 from "./src/11/index.ts";
@@ -31,8 +31,8 @@ const days = {
     4: day4,
     5: day5,
     6: day6,
-    // 7: day7,
-    // 8: day8,
+    7: day7,
+    8: day8,
     // 9: day9,
     // 10: day10,
     // 11: day11,
